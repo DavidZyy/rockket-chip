@@ -10,8 +10,8 @@ object v {
   val scala = "2.13.10"
   // the first version in this Map is the mainly supported version which will be used to run tests
   val chiselCrossVersions = Map(
-    "3.6.0" -> (ivy"edu.berkeley.cs::chisel3:3.6.0", ivy"edu.berkeley.cs:::chisel3-plugin:3.6.0"),
     "5.0.0" -> (ivy"org.chipsalliance::chisel:5.0.0", ivy"org.chipsalliance:::chisel-plugin:5.0.0"),
+    "3.6.0" -> (ivy"edu.berkeley.cs::chisel3:3.6.0", ivy"edu.berkeley.cs:::chisel3-plugin:3.6.0"),
   )
   val mainargs = ivy"com.lihaoyi::mainargs:0.5.0"
   val json4sJackson = ivy"org.json4s::json4s-jackson:4.0.5"
@@ -141,14 +141,16 @@ trait Emulator extends Cross.Module2[String, String] {
       os.proc("firtool",
         generator.chirrtl().path,
         s"--annotation-file=${generator.chiselAnno().path}",
-        "-disable-infer-rw",
+        //"-disable-infer-rw",
         "--disable-annotation-unknown",
         "-dedup",
         "-O=debug",
-        "--split-verilog",
+        //"--split-verilog",
         "--preserve-values=named",
         "--output-annotation-file=mfc.anno.json",
-        s"-o=${T.dest}"
+        s"-o=${T.dest}/TestHarness.sv",
+        "--disable-all-randomization",
+        "--lowering-options=disallowLocalVariables, locationInfoStyle=none",
       ).call(T.dest)
       PathRef(T.dest)
     }
@@ -402,7 +404,8 @@ def envByNameOrRiscv(name: String): String = {
   sys.env.get(name) match {
     case Some(value) => value
     // TODO: if not found, give a warning
-    case None => sys.env("RISCV")
+    // case None => sys.env("RISCV")
+    case None => "/home/zhuyangyang/RISCV"
   }
 }
 

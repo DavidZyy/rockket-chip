@@ -1,15 +1,16 @@
 # The Littlest Diplomacy Walkthrough
 
-- [What is Diplomacy?](#what-is-diplomacy)
-- [Diplomatic Adder and Test Bench](#diplomatic-adder-and-test-bench)
-  * [Parameter negotiation and passing](#parameter-negotiation-and-passing)
-    + [Parameters](#parameters)
-    + [Node Implementation](#node-implementation)
-    + [Nodes](#nodes)
-  * [Creating the `LazyModule`s](#creating-the-lazymodules)
-  * [Creating the Top](#creating-the-top)
-  * [The Generated Verilog](#the-generated-verilog)
-- [Other Resources](#other-resources)
+- [The Littlest Diplomacy Walkthrough](#the-littlest-diplomacy-walkthrough)
+  - [What is Diplomacy?](#what-is-diplomacy)
+  - [Diplomatic Adder and Test Bench](#diplomatic-adder-and-test-bench)
+    - [Parameter negotiation and passing](#parameter-negotiation-and-passing)
+      - [Parameters](#parameters)
+      - [Node Implementation](#node-implementation)
+      - [Nodes](#nodes)
+    - [Creating the `LazyModule`s](#creating-the-lazymodules)
+    - [Creating the Top](#creating-the-top)
+    - [The Generated Verilog](#the-generated-verilog)
+  - [Other Resources](#other-resources)
 
 ## What is Diplomacy?
 
