@@ -10,20 +10,22 @@ import freechips.rocketchip.util._
 
 class MROMHelper extends BlackBox with HasBlackBoxInline {
   val io = IO(new Bundle {
+    val clock = Input(Clock())
     val raddr = Input(UInt(32.W))
     val ren = Input(Bool())
     val rdata = Output(UInt(32.W))
   })
   setInline("MROMHelper.v",
     """module MROMHelper(
+      |  input clock,
       |  input [31:0] raddr,
       |  input ren,
       |  output reg [31:0] rdata
       |);
       |import "DPI-C" function void mrom_read(input int raddr, output int rdata);
-      |always @(*) begin
+      |always @(negedge clock) begin
       |  if (ren) mrom_read(raddr, rdata);
-      |  else rdata = 0;
+      |  else rdata = rdata;
       |end
       |endmodule
     """.stripMargin)
@@ -55,6 +57,7 @@ class AXI4MROM(address: Seq[AddressSet])(implicit p: Parameters) extends LazyMod
                Mux(in.ar.fire, stateWaitRready, stateIdle),
                Mux(in. r.fire, stateIdle, stateWaitRready))
 
+    mrom.io.clock := clock
     mrom.io.raddr := in.ar.bits.addr
     mrom.io.ren := in.ar.fire
     in.ar.ready := (state === stateIdle)
