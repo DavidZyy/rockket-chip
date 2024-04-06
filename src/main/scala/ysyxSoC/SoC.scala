@@ -40,13 +40,13 @@ class ysyxSoCASIC(hasChipLink: Boolean)(implicit p: Parameters) extends LazyModu
   // ))
   // val lpsram = LazyModule(new APBPSRAM(AddressSet.misaligned(0x80000000L, 0x400000)))
   val lmrom = LazyModule(new AXI4MROM(AddressSet.misaligned(0x20000000, 0x1000)))
-  // val sramNode = AXI4RAM(AddressSet.misaligned(0x0f000000, 0x2000).head, false, true, 8, None, Nil, false)
+  val sramNode = AXI4RAM(AddressSet.misaligned(0x0f000000, 0x2000).head, false, true, 8, None, Nil, false)
   // val lsdram = LazyModule(new APBSDRAM(AddressSet.misaligned(0xa0000000L, 0x2000000)))
 
   // List(lspi.node, luart.node, lpsram.node, lsdram.node, lgpio.node, lkeyboard.node, lvga.node).map(_ := apbxbar)
-  // List(apbxbar := AXI4ToAPB(), lmrom.node, sramNode).map(_ := xbar)
+  List(apbxbar := AXI4ToAPB(), lmrom.node, sramNode).map(_ := xbar)
   List(luart.node).map(_ := apbxbar)
-  List(apbxbar := AXI4ToAPB(), lmrom.node).map(_ := xbar)
+  // List(apbxbar := AXI4ToAPB(), lmrom.node).map(_ := xbar)
   if (hasChipLink) chiplinkNode.get := xbar
   xbar := cpu.masterNode
 
